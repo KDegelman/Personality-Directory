@@ -1,5 +1,4 @@
--- Run this script in MySQL Workbench before enabling DB_MODE=mysql.
--- Three entities and 18 total properties, matching the submitted proposal.
+-- Three entities and 18 total properties.
 CREATE DATABASE IF NOT EXISTS personality_directory CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE personality_directory;
 

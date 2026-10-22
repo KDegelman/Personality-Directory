@@ -2,7 +2,7 @@
   "name": "personality-directory",
   "version": "0.1.0",
   "private": true,
-  "description": "CWEB 280 secure backend starter for the Personality Directory",
+  "description": "CWEB 280 secure backend for the Personality Directory",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {
