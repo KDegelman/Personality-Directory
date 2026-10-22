@@ -27,9 +27,9 @@ function createMemoryStore() {
     }
     return {
         mode: "memory (temporary)",
-        async list(def) { return copy(state[def.key]); },
-        async find(def, id) { return copy(state[def.key].find(item => item[def.id] === id) || null); },
-        async create(def, data) {
+        async listRecord(def) { return copy(state[def.key]); },
+        async findRecord(def, id) { return copy(state[def.key].find(item => item[def.id] === id) || null); },
+        async createRecord(def, data) {
             checkReferences(def.key, data);
             const row = { [def.id]: ++counters[def.key], ...copy(data) };
             if (def.key === "personalities") { row.isFavorite ??= false; row.dateAdded = new Date().toISOString(); }
@@ -37,14 +37,14 @@ function createMemoryStore() {
             state[def.key].push(row);
             return copy(row);
         },
-        async update(def, id, data) {
+        async updateRecord(def, id, data) {
             const row = state[def.key].find(item => item[def.id] === id);
             if (!row) return null;
             checkReferences(def.key, data);
             Object.assign(row, copy(data));
             return copy(row);
         },
-        async remove(def, id) {
+        async removeRecord(def, id) {
             const index = state[def.key].findIndex(item => item[def.id] === id);
             if (index === -1) return false;
             if (def.key === "categories" && state.personalities.some(item => item.categoryId === id)) {

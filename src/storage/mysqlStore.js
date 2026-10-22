@@ -31,12 +31,12 @@ async function createMysqlStore() {
     };
     return {
         mode: "mysql",
-        async list(def) {
+        async listRecord(def) {
             const [rows] = await pool.query(`SELECT * FROM ${tableName(def)} ORDER BY \`${def.id}\` ASC`);
             return rows.map(row => normalise(def, row));
         },
         find,
-        async create(def, data) {
+        async createRecord(def, data) {
             const fields = Object.keys(data);
             const columns = sqlFields(fields);
             const placeholders = fields.map(() => "?").join(", ");
@@ -44,14 +44,14 @@ async function createMysqlStore() {
             const [result] = await pool.execute(statement, fields.map(field => data[field]));
             return find(def, result.insertId);
         },
-        async update(def, id, data) {
+        async updateRecord(def, id, data) {
             const fields = Object.keys(data);
             const assignments = fields.map(field => `\`${field}\` = ?`).join(", ");
             const statement = `UPDATE ${tableName(def)} SET ${assignments} WHERE \`${def.id}\` = ?`;
             const [result] = await pool.execute(statement, [...fields.map(field => data[field]), id]);
             return result.affectedRows ? find(def, id) : null;
         },
-        async remove(def, id) {
+        async removeRecord(def, id) {
             const [result] = await pool.execute(`DELETE FROM ${tableName(def)} WHERE \`${def.id}\` = ?`, [id]);
             return result.affectedRows > 0;
         },
