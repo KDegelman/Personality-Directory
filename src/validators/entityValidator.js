@@ -89,16 +89,40 @@ function validateEntityInput(def, input, partial = false) { //Checks if missing 
             }
 
             case "date": {
-                //Todo
-                // [AI-G6] Converts accepted dates into UTC text formatted for MySQL DATETIME.
-                // Date.parse() accepts some non-ISO strings, so this does not enforce strict ISO validation.
+                // [AI-G6] Requires a full ISO date/time with a timezone and rejects impossible dates.
+                // Date.parse() alone can accept non-ISO text or normalize invalid calendar dates.
                 // Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-                if (typeof value !== "string" || !Number.isFinite(Date.parse(value))) {
-                    throw new ApiError(400, (step + " must be an ISO date/time string"));
+                let match = null;
+                if (typeof value === "string") {
+                    match = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.\d{1,3})?(Z|[+-]\d{2}:\d{2})$/.exec(value);
                 }
 
-                const dateText = new Date(value).toISOString();
-                cleaned[step] = (dateText.slice(0, 19).replace("T", " "));
+                if (!match || !Number.isFinite(Date.parse(value))) {
+                    throw new ApiError(400, (step + " must be a valid ISO date/time string"));
+                }
+
+                let offsetMinutes = 0;
+                if (match[2] !== "Z") { //Checks the timezone offset
+                    const hours = Number(match[2].slice(1, 3));
+                    const minutes = Number(match[2].slice(4, 6));
+
+                    if (hours > 23 || minutes > 59) {
+                        throw new ApiError(400, (step + " must be a valid ISO date/time string"));
+                    }
+
+                    offsetMinutes = hours * 60 + minutes;
+                    if (match[2][0] === "-") {
+                        offsetMinutes = -offsetMinutes;
+                    }
+                }
+
+                const date = new Date(value);
+                const originalTime = new Date(date.getTime() + offsetMinutes * 60000).toISOString().slice(0, 19);
+                if (originalTime !== match[1]) { //Rejects dates changed by JavaScript's parser
+                    throw new ApiError(400, (step + " must be a valid ISO date/time string"));
+                }
+
+                cleaned[step] = (date.toISOString().slice(0, 19).replace("T", " ")); //Converts to MySQL UTC format
                 break;
             }
         }

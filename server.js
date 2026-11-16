@@ -5,25 +5,12 @@ require("dotenv").config();
 
 const crypto = require("node:crypto"); //Gets the tools for generating an API token
 const { createApp } = require("./src/app");
-const { createMemoryStore } = require("./src/storage/memoryStore");
 const { createMysqlStore } = require("./src/storage/mysqlStore");
 
 async function start() { //Sets up storage and starts the server
     const port = Number(process.env.PORT || 3000); //Sets the server port
     const host = process.env.HOST || "127.0.0.1"; //Sets the server IP, defaults to this computer
-    const dbMode = process.env.DB_MODE || "memory"; //Selects where we store our data, temporarily in RAM or permanently in MySQL
-
-    let store = null; //Placeholder for the storage system created below
-
-    if (dbMode === "mysql") {
-        store = await createMysqlStore(); //Creates and assigns the MySQL storage system
-    } else if (dbMode === "memory") {
-        store = createMemoryStore(); //Creates and assigns the temporary RAM-based storage system
-    }
-
-    if (!store) {
-        throw new Error("DB_MODE must be 'memory' or 'mysql'."); //Throws an error if no valid storage was selected
-    }
+    const store = await createMysqlStore(); //Sets up MySQL storage
 
     // [AI-G6] A development token is generated on startup and used when API_TOKEN isn't configured.
     const generatedToken = crypto.randomBytes(24).toString("hex"); //Creates and converts random bytes to hexadecimal text
@@ -32,7 +19,6 @@ async function start() { //Sets up storage and starts the server
 
     const server = app.listen(port, host, function() { //Starts the server and runs this function once it's listening
         console.log(("Personality Directory running at http://" + host + ":" + port));
-        console.log(("Storage: " + dbMode));
 
         if (!process.env.API_TOKEN) {
             console.log(("Development API token: " + apiToken));
