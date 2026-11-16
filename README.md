@@ -63,9 +63,164 @@ The first command runs validation and API tests using test-only database substit
 
 The MySQL-backed API is implemented and has passed the current automated tests. Some components are still **proofs of concept**, rather than the versions I intend to keep for the final project:
 
-- [ ] **Validation:** Review the current shared, model-driven validator and decide whether to keep it or use an approach closer to what is taught in class.
-- [ ] **Testing:** Review and rework the AI-generated test suite. The existing tests pass, but they are a starting point rather than my finished testing work.
-- [ ] **Frontend:** Replace the nearly completely AI-generated basic HTML/JavaScript interface with a more usable desktop-oriented design, drawing on the workflows of my previous Android application.
+1. BACKEND ALTERATIONS
+----------------------
+
+[ ] Convert MySQL2 queries to TypeORM.
+- Define the three entities in TypeORM.
+- Replace manual SQL with repository operations.
+- Preserve the current controllers and routes where possible.
+
+[ ] Convert the database to SQLite.
+- Configure TypeORM for SQLite.
+- Recreate the existing tables and relationships.
+- Verify database persistence.
+- Do this alongside the TypeORM conversion.
+
+[ ] Replace the custom validator with class-validator.
+- Preserve the current validation requirements.
+- Review required/optional fields, null handling, and lengths.
+- Verify URL, date, boolean and ID validation.
+- Ensure validation errors produce appropriate JSON responses.
+
+[ ] Review and rework the AI-generated test suite.
+- Update tests for TypeORM and SQLite.
+- Test all CRUD endpoints.
+- Test authentication and invalid input.
+- Test foreign keys and database constraints.
+- Review the tests rather than simply accepting generated code.
+
+[ ] Review PUT and PATCH behaviour.
+- Decide whether PUT should replace entire records.
+- Keep PATCH for partial updates.
+
+[ ] Review deletion behaviour.
+- Confirm what happens when deleting categories with personalities.
+- Confirm what happens when deleting personalities with social profiles.
+
+[ ] Review the existing backend code and documentation.
+- Check for outdated MySQL references.
+- Remove unused code and dependencies.
+- Correct misplaced comments in app.js.
+- Preserve personal comments and AI-G6 documentation.
+
+
+2. BACKEND ADDITIONS
+--------------------
+
+[ ] Implement authentication suitable for the completed application.
+- Decide between JWT, sessions, or another permitted approach.
+- Authenticate users before protected API operations.
+- Support the frontend's login and logout functionality.
+- Test authorized and unauthorized requests.
+
+[ ] Add authentication endpoints if required.
+- Login.
+- Authentication status.
+- Logout or token invalidation, depending on the approach.
+
+[ ] Prepare demonstration data.
+- Sample categories.
+- Sample personalities.
+- Sample social profiles.
+- Make it easy to demonstrate relationships and CRUD.
+
+[ ] Finish testing the completed backend.
+- Automated tests.
+- Postman CRUD requests.
+- Error cases (400, 401, 404, 409, 500 as applicable).
+- Verify persistence after restarting.
+- Save test results for documentation.
+
+
+3. FRONTEND
+-----------
+
+[ ] Replace the HTML prototype with Vue.
+- Set up Vue and Vue Router.
+- Create components, views, and routes.
+- Implement props and emits.
+- Use the Vue version demonstrated in class if possible.
+
+[ ] Rebuild the CRUD interface in Vue.
+- Personality list.
+- Personality details.
+- Add Personality.
+- Edit Personality.
+- Delete Personality.
+- Social Profile management.
+- Category lookup and selection.
+- Full CRUD for at least two entities.
+
+[ ] Connect Vue to the Express API.
+- Use fetch() with JSON.
+- Display records returned by the API.
+- Send create, update and delete requests.
+- Handle failed requests and connection errors.
+
+[ ] Add frontend authentication.
+- Login screen.
+- Protected views/routes.
+- Connect authentication to backend.
+- Logout functionality.
+- Prevent unauthorized access to protected interfaces.
+
+[ ] Rework the interface around my previous Android application.
+- Home/dashboard navigation.
+- Searchable record list.
+- Detailed view for selected records.
+- Prefilled editing forms.
+- Search for records directly from edit/delete screens.
+- Delete confirmation.
+- Navigation back to the main screen.
+
+[ ] Improve the desktop interface.
+- Use the larger screen more effectively.
+- Make social profiles accessible from their personality.
+- Support category filtering.
+- Consider favourites filtering.
+- Improve layout, navigation and readability.
+
+[ ] Implement client-side validation and user feedback.
+- Validate required fields.
+- Display useful errors beside form fields.
+- Display confirmation after successful operations.
+- Handle empty lists and missing data.
+- Prevent forms from crashing on incorrect input.
+
+[ ] Add Bootstrap-Vue or other qualifying third-party components.
+- Forms and inputs.
+- Buttons.
+- Tables or lists.
+- Navigation.
+- Use components where they actually improve the application.
+
+[ ] Check the complete frontend functionality.
+- Navigation works.
+- All forms work.
+- CRUD works through the browser.
+- API authentication works.
+- UI authentication works.
+- Errors and successes are displayed correctly.
+
+
+4. DOCUMENTATION AND SUBMISSION
+-------------------------------
+
+[ ] Update the final-project proposal.
+- Confirm project scope and instructor approval.
+- Include project description.
+- Include class diagrams.
+- Include GUI mock-ups before and after user actions.
+- Show navigation and major workflows.
+
+[ ] Prepare the formal presentation.
+- Demonstrate the frontend.
+- Demonstrate CRUD and database persistence.
+- Demonstrate authentication.
+- Explain the important technical decisions.
+- Prepare screenshots or other presentation material.
+
 
 ## Development and AI assistance
 
