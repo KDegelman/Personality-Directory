@@ -71,4 +71,4 @@ The MySQL-backed API is implemented and has passed the current automated tests. 
 
 The project adapts ideas from previous coursework, including my Web Data Importer/EIDR and Boolean Bros Gym projects. AI assistance was used for parts of the design, implementation, code review, automated tests, and documentation.
 
-Comments marked **`[AI-G6]`** identify AI-written technical documentation and/or AI-suggested implementation decisions, often with links to supporting sources. The marker does not imply that all marked code wss written with AI assistance.
+Comments marked **`[AI-G6]`** identify AI-written technical documentation and/or AI-suggested implementation decisions, often with links to supporting sources. The marker does not imply that all marked code was written with AI assistance.
