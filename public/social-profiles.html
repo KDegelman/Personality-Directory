@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="style.css"><title>Social Profiles - Personality Directory</title></head>
+<body data-entity="social-profiles" data-id="profileId" data-label="platform">
+<h1>Social Profiles</h1>
+<nav><a href="index.html">Home</a> | <a href="categories.html">Categories</a> | <a href="personalities.html">Personalities</a> | <a href="social-profiles.html">Social Profiles</a></nav>
+<p>API token: <input id="token" type="password" size="45" autocomplete="off"> <button id="connect" type="button">Load data</button></p>
+<p id="message">Enter the API token to load records.</p>
+<h2>Add or edit</h2>
+<p id="editing">Adding new record</p>
+<form id="recordForm">
+<label>Personality: <select name="personalityId" data-lookup="personalities" required><option value="">Select personality</option></select></label><br>
+<label>Platform: <input name="platform" required maxlength="50"></label><br>
+<label>Username: <input name="username" required maxlength="100"></label><br>
+<label>Profile URL: <input name="profileUrl" type="url" required maxlength="2048"></label><br>
+<label>Following: <input name="isFollowing" type="checkbox"></label><br>
+<label>Last checked (optional): <input name="lastChecked" placeholder="2026-11-16T12:00:00Z"></label><br>
+<button type="submit">Save</button> <button type="button" id="clear">Clear</button>
+</form>
+<h2>Records</h2>
+<table><thead><tr><th>ID</th><th>Name</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table>
+<h2>Record details</h2>
+<pre id="details">Click View beside a record.</pre>
+<script src="app.js"></script>
+</body></html>

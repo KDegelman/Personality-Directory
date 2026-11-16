@@ -1,53 +1,74 @@
 # Personality Directory
 
-**CWEB-280 — Internet Programming and Web Applications 2**
+CWEB-280 — Internet Programming and Web Applications 2
 
-A Node.js and Express REST API for organizing artists, creators, performers, and their social media profiles. The project uses three related entities: **Personality**, **Category**, and **SocialProfile**.
+Personality Directory is a Node.js/Express application for tracking creators and performers, their categories, and their social media profiles. It uses MySQL to save records and provides authenticated JSON APIs for the three related entities: **Personality**, **Category**, and **SocialProfile**.
 
-## Features
+## Current features
 
-- CRUD endpoints for all three entities.
-- MySQL storage with relationships defined in `database/schema.sql`.
-- Shared routing, controllers, and input validation.
-- Bearer-token authentication for `/api` requests.
-- JSON responses and centralized error handling.
-- Optional in-memory storage for development; data in this mode is not saved between restarts.
+- Create, view, update, and delete all three entity types.
+- MySQL storage with foreign-key relationships.
+- Shared controllers, routes, input validation, and error handling.
+- Bearer-token authentication for `/api` routes.
+- Basic HTML/JavaScript pages for managing records at `/site/`.
+- Automated API/validation tests and separate MySQL integration tests.
 
-## Setup
+The frontend is an initial functional prototype; it is not the finished desktop interface. Authentication currently uses a shared API token rather than a user login system.
 
-Requires **Node.js 20 or newer**, npm, and MySQL for persistent storage.
+## Running the project
+
+Requires Node.js 20+, npm, and a running MySQL server.
 
 1. Run `npm install` in the project folder.
-2. Run `database/schema.sql` in MySQL Workbench to create the database and tables.
-3. Copy `.env.example` to `.env`. Set `DB_MODE=mysql`, configure the `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, and `DB_NAME` values for your MySQL installation, and set an `API_TOKEN`.
+2. Execute `database/schema.sql` in MySQL Workbench.
+3. Create a `.env` file in the project root (or copy `.env.example` if present) and configure the MySQL connection:
+
+   ```dotenv
+   PORT=3000
+   HOST=127.0.0.1
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_USER=root
+   DB_PASSWORD=YOUR_MYSQL_PASSWORD
+   DB_NAME=personality_directory
+   ```
+
+   You can also add `API_TOKEN=YOUR_TOKEN`. Otherwise, the server prints a temporary development token when it starts. Do not commit the real `.env` file.
+
 4. Run `npm start`.
-5. Open `http://127.0.0.1:3000/health` to check the server's response and selected storage mode.
-
-The server uses port `3000` by default. Keep `.env` private; it contains local configuration and may contain credentials.
-
-For temporary storage without MySQL, set `DB_MODE=memory`. If `API_TOKEN` is not configured, the server generates a development token and prints it in the terminal on startup.
+5. Open `http://127.0.0.1:3000/site/` for the website, or `/health` to check the server. Enter the API token on the data pages.
 
 ## API
 
-| Method | Endpoint | Purpose |
+| Method | Route | Function |
 | --- | --- | --- |
-| GET | `/` and `/health` | Public status endpoints |
-| GET | `/api/personalities`, `/api/categories`, `/api/social-profiles` | List records |
+| GET | `/api/{resource}` | List records |
 | GET | `/api/{resource}/:id` | Get one record |
 | POST | `/api/{resource}` | Create a record |
 | PUT / PATCH | `/api/{resource}/:id` | Update a record |
 | DELETE | `/api/{resource}/:id` | Delete a record |
 
-All `/api` endpoints require an `Authorization: Bearer <token>` header. POST, PUT, and PATCH requests accept JSON. In this implementation, PUT and PATCH both support partial updates.
-
-Request examples and expected responses are in [`docs/API_EXAMPLES.md`](docs/API_EXAMPLES.md).
+`{resource}` is `personalities`, `categories`, or `social-profiles`. API requests require `Authorization: Bearer <token>`. Write requests use JSON. Both PUT and PATCH currently permit partial updates.
 
 ## Testing
 
-Run `npm test` for the included automated tests. The existing API tests use the in-memory store; MySQL behaviour should also be checked with MySQL configured and requests sent through Postman.
+```powershell
+npm test
+npm run test:mysql
+```
+
+The first command runs validation and API tests using test-only database substitutes. The second tests real MySQL operations in a separate **`personality_directory_test`** database, which is reset during testing. Do not put important data in that test database.
+
+## Current status and TODO
+
+The MySQL-backed API is implemented and has passed the current automated tests. Some components are still **proofs of concept**, rather than the versions I intend to keep for the final project:
+
+- [ ] **Validation:** Review the current shared, model-driven validator and decide whether to keep it or use an approach closer to what is taught in class.
+- [ ] **Testing:** Review and rework the AI-generated test suite. The existing tests pass, but they are a starting point rather than my finished testing work.
+- [ ] **Frontend:** Replace the nearly completely AI-generated basic HTML/JavaScript interface with a more usable desktop-oriented design, drawing on the workflows of my previous Android application.
 
 ## Development and AI assistance
 
-The project draws on CRUD and server patterns from my earlier Web Data Importer/EIDR and Boolean Bros Gym coursework. AI assistance was used in parts of the backend design, code review, and technical documentation.
+The project adapts ideas from previous coursework, including my Web Data Importer/EIDR and Boolean Bros Gym projects. AI assistance was used for parts of the design, implementation, code review, automated tests, and documentation.
 
-Source-code comments marked **`[AI-G6]`** are AI-authored technical explanations or notes identifying AI-suggested implementation choices, generally with supporting documentation links. The marker is for identifying those comments; unmarked code or comments should not be taken as proof that no AI assistance was involved.
+Comments marked **`[AI-G6]`** identify AI-written technical documentation and/or AI-suggested implementation decisions, often with links to supporting sources. The marker does not imply that all marked code wss written with AI assistance.

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="style.css"><title>Personalities - Personality Directory</title></head>
+<body data-entity="personalities" data-id="personalityId" data-label="displayName">
+<h1>Personalities</h1>
+<nav><a href="index.html">Home</a> | <a href="categories.html">Categories</a> | <a href="personalities.html">Personalities</a> | <a href="social-profiles.html">Social Profiles</a></nav>
+<p>API token: <input id="token" type="password" size="45" autocomplete="off"> <button id="connect" type="button">Load data</button></p>
+<p id="message">Enter the API token to load records.</p>
+<h2>Add or edit</h2>
+<p id="editing">Adding new record</p>
+<form id="recordForm">
+<label>Display name: <input name="displayName" required maxlength="100"></label><br>
+<label>Alias: <input name="alias" maxlength="100"></label><br>
+<label>Category: <select name="categoryId" data-lookup="categories" required><option value="">Select category</option></select></label><br>
+<label>Description: <textarea name="description" maxlength="5000"></textarea></label><br>
+<label>Notes: <textarea name="notes" maxlength="5000"></textarea></label><br>
+<label>Favorite: <input name="isFavorite" type="checkbox"></label><br>
+<button type="submit">Save</button> <button type="button" id="clear">Clear</button>
+</form>
+<h2>Records</h2>
+<table><thead><tr><th>ID</th><th>Name</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table>
+<h2>Record details</h2>
+<pre id="details">Click View beside a record.</pre>
+<script src="app.js"></script>
+</body></html>

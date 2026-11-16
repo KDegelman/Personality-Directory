@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("node:path");
 const { requireApiToken } = require("./middleware/authMiddleware");
 const { errorHandler } = require("./middleware/errorHandler");
 const { createCrudRouter } = require("./routes/crudRoutes");
@@ -30,6 +31,10 @@ function createApp({ store, apiToken }) { //Sets up the app using the storage sy
     });
 
     // [AI-G6] The status routes are public, while requests under /api require a bearer token.
+    // [AI-G6] Serves the basic website from /site without changing the existing API routes.
+    // Source: https://expressjs.com/en/5x/starter/static-files/
+    app.use("/site", express.static(path.join(__dirname, "../public")));
+
     app.use("/api", requireApiToken(apiToken)); //Checks for a valid token before allowing API requests
 
     //Sets up the URLs for each entity using the same CRUD functions
