@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Private configuration
+.env
+.env.*
+!.env.example
+
+# WebStorm
+.idea/
+
+# Personal documentation
+docs/IMPLEMENTATION_NOTES.md
+docs/archive/
+
+# Logs
+*.log
